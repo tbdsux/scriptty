@@ -1,0 +1,8 @@
+.cm-editor.cm-focused {
+  outline: none;
+}
+
+.cm-editor {
+  border-radius: 5px !important;
+  padding: 2px !important;
+}
