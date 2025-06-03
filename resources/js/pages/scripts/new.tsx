@@ -1,6 +1,7 @@
 import CodeEditor from '@/components/code-editor';
 import TextEditor from '@/components/text-editor';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Command,
   CommandEmpty,
@@ -46,11 +47,15 @@ export default function NewScriptsPage() {
     code: string;
     codeLang: string;
     description: string;
+    isPublic: boolean;
+    isGlobal: boolean;
   }>({
     title: '',
     code: 'print("Hello World")',
     codeLang: 'python',
     description: '',
+    isPublic: false,
+    isGlobal: false,
   });
 
   const [openCb, setOpenCb] = useState(false);
@@ -176,7 +181,49 @@ export default function NewScriptsPage() {
               </FormItem>
             </FormField>
 
-            {/* <FormField /> */}
+            <div className="flex flex-col items-start space-y-2">
+              <FormField name="isPublic">
+                <FormItem className="inline-flex flex-row-reverse items-center space-x-2">
+                  <FormLabel>
+                    <span className="text-sm">Public Script</span>
+                    {'  '}
+                    <span className="text-muted-foreground text-xs">
+                      (Visible to all users)
+                    </span>
+                  </FormLabel>
+
+                  <FormControl>
+                    <Checkbox
+                      checked={form.data.isPublic}
+                      onCheckedChange={(v) =>
+                        form.setData('isPublic', Boolean(v))
+                      }
+                    />
+                  </FormControl>
+                </FormItem>
+              </FormField>
+
+              <FormField name="isGlobal">
+                <FormItem className="inline-flex flex-row-reverse items-center space-x-2">
+                  <FormLabel>
+                    <span className="text-sm">Global</span>
+                    {'  '}
+                    <span className="text-muted-foreground text-xs">
+                      (Will be shown in the home page)
+                    </span>
+                  </FormLabel>
+
+                  <FormControl>
+                    <Checkbox
+                      checked={form.data.isGlobal}
+                      onCheckedChange={(v) =>
+                        form.setData('isGlobal', Boolean(v))
+                      }
+                    />
+                  </FormControl>
+                </FormItem>
+              </FormField>
+            </div>
 
             <div className="flex items-center justify-end">
               <Button type="submit">

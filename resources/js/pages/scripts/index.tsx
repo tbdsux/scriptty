@@ -12,8 +12,6 @@ import { Script } from '@/types/scripts';
 import { Head, Link } from '@inertiajs/react';
 
 export default function ScriptsPage(props: { scripts: Script[] }) {
-  console.log(props);
-
   return (
     <AppLayout
       breadcrumbs={[{ title: 'My Scripts', href: '/dashboard/scripts' }]}

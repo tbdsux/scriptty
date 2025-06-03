@@ -8,36 +8,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import AppLayout from '@/layouts/app-layout';
+import HomeLayout from '@/layouts/home-layout';
 import { sanitizeHtml } from '@/lib/utils';
+import { BreadcrumbItem } from '@/types';
 import { Script } from '@/types/scripts';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { LanguageName } from '@uiw/codemirror-extensions-langs';
-import { CopyIcon, PenIcon, Trash2Icon } from 'lucide-react';
-import { FormEventHandler } from 'react';
-import { toast } from 'sonner';
+import { CopyIcon } from 'lucide-react';
 
-export default function ScriptItemPage(props: { script: Script }) {
-  const form = useForm({});
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'Scripts',
+    href: '/scripts',
+  },
+];
 
-  const deleteScript: FormEventHandler = (e) => {
-    e.preventDefault();
-
-    form.delete(route('dashboard.scripts.destroy', [props.script.slug]), {
-      onSuccess: () => {
-        toast.success('Script deleted successfully!');
-      },
-      onError: (errors) => {
-        console.log('Error', errors);
-      },
-    });
-  };
-
+export default function PublicScriptItemPage(props: { script: Script }) {
   return (
-    <AppLayout
-      breadcrumbs={[{ title: 'My Scripts', href: '/dashboard/scripts' }]}
-    >
-      <Head title={`${props.script.title} | My Scripts`} />
+    <HomeLayout breadcrumbs={breadcrumbs}>
+      <Head title={`${props.script.title} | Scripts `} />
 
       <div className="p-4">
         <Card className="relative">
@@ -68,28 +57,6 @@ export default function ScriptItemPage(props: { script: Script }) {
                 ) : null}
               </div>
             </CardDescription>
-
-            <div className="absolute top-2 right-2 inline-flex space-x-2">
-              <Button asChild className="h-auto py-1 text-sm">
-                <Link
-                  href={route('dashboard.scripts.edit', [props.script.slug])}
-                >
-                  <PenIcon className="size-3" />
-                  Edit
-                </Link>
-              </Button>
-
-              <form onSubmit={deleteScript}>
-                <Button
-                  type="submit"
-                  variant={'destructive'}
-                  className="h-auto py-1 text-sm"
-                >
-                  <Trash2Icon className="size-3" />
-                  Delete
-                </Button>
-              </form>
-            </div>
           </CardHeader>
 
           <CardContent>
@@ -125,6 +92,6 @@ export default function ScriptItemPage(props: { script: Script }) {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </HomeLayout>
   );
 }

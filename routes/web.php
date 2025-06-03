@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\PublicScriptController;
 use App\Http\Controllers\Dashboard\ScriptController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -7,6 +8,8 @@ use Inertia\Inertia;
 Route::get('/', function () {
   return Inertia::render('welcome');
 })->name('home');
+
+Route::get('/scripts/{script}', [PublicScriptController::class, 'show'])->name('public.scripts.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('dashboard', function () {

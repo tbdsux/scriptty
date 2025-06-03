@@ -42,11 +42,11 @@ class ScriptController extends Controller
     if ($request->has('description') && is_null($request->input("description"))) {
       $request->merge(['description' => '']);
     }
-    if (!$request->has('is_public')) {
-      $request->merge(['is_public' => false]);
+    if (!$request->has('isPublic')) {
+      $request->merge(['isPublic' => false]);
     }
-    if (!$request->has('is_global')) {
-      $request->merge(['is_global' => false]);
+    if (!$request->has('isGlobal')) {
+      $request->merge(['isGlobal' => false]);
     }
 
     $request->validate([
@@ -54,8 +54,8 @@ class ScriptController extends Controller
       'description' => 'string',
       'code' => 'required|string',
       'codeLang' => 'required|string',
-      'is_public' => 'boolean',
-      'is_global' => 'boolean',
+      'isPublic' => 'boolean',
+      'isGlobal' => 'boolean',
     ]);
 
     // Generate new share short slug
@@ -67,8 +67,8 @@ class ScriptController extends Controller
     $script->description = $request->input("description");
     $script->code = $request->input('code');
     $script->code_lang = $request->input('codeLang');
-    $script->is_public = $request->input('is_public');
-    $script->is_global = $request->input('is_global');
+    $script->is_public = $request->input('isPublic');
+    $script->is_global = $request->input('isGlobal');
     $script->slug = $slug;
 
     $request->user()->scripts()->save($script);
@@ -130,12 +130,20 @@ class ScriptController extends Controller
     if ($request->has('description') && is_null($request->input("description"))) {
       $request->merge(['description' => '']);
     }
+    if (!$request->has('isPublic')) {
+      $request->merge(['isPublic' => false]);
+    }
+    if (!$request->has('isGlobal')) {
+      $request->merge(['isGlobal' => false]);
+    }
 
     $request->validate([
       'title' => 'required|string',
       'description' => 'string',
       'code' => 'required|string',
       'codeLang' => 'required|string',
+      'isPublic' => 'boolean',
+      'isGlobal' => 'boolean',
     ]);
 
     // Update
@@ -145,6 +153,8 @@ class ScriptController extends Controller
       'code' => $request->input('code'),
       'code_lang' => $request->input('codeLang'),
       'updated_at' => now(),
+      'is_public' => $request->input('isPublic'),
+      'is_global' => $request->input('isGlobal'),
     ]);
 
     return redirect()->route('dashboard.scripts.show', [$slug])->with('success', 'Script updated successfully.');
