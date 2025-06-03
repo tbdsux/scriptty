@@ -12,6 +12,8 @@ import { Script } from '@/types/scripts';
 import { Head, Link } from '@inertiajs/react';
 
 export default function ScriptsPage(props: { scripts: Script[] }) {
+  console.log(props);
+
   return (
     <AppLayout
       breadcrumbs={[{ title: 'My Scripts', href: '/dashboard/scripts' }]}
@@ -32,11 +34,11 @@ export default function ScriptsPage(props: { scripts: Script[] }) {
             {props.scripts.map((item) => (
               <Link
                 key={item.id}
-                href={route('dashboard.scripts.show', [item.share_link])}
+                href={route('dashboard.scripts.show', [item.slug])}
               >
                 <Card className="relative h-full">
                   <Badge className="absolute top-2 right-2">
-                    {item.codeLang}
+                    {item.code_lang}
                   </Badge>
 
                   <CardHeader>

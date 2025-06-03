@@ -16,13 +16,13 @@ return new class extends Migration {
       $table->text("code");
       $table->string('title');
       $table->text('description')->default('');
-      $table->string('codeLang');
+      $table->string('code_lang');
+      $table->string('slug')->unique();
       $table->foreignId('user_id')->constrained()->onDelete('cascade');
       $table->integer('views')->default(0);
       $table->integer('likes')->default(0);
       $table->boolean('is_public')->default(false);
-      $table->boolean('share_global')->default(false);
-      $table->string('share_link')->nullable()->default(null);
+      $table->boolean('is_global')->default(false);
     });
   }
 

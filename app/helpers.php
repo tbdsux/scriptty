@@ -7,7 +7,7 @@ use Hidehalo\Nanoid\Client;
  *
  * @return string
  */
-function generateNewShareLink(): string
+function generateSlug(): string
 {
   $nanoidClient = new Client();
   return $nanoidClient->generateId($size = 21, $mode = Client::MODE_DYNAMIC);

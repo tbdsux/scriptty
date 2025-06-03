@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Script;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,10 +20,10 @@ class ScriptController extends Controller
         'id' => $script->id,
         'title' => $script->title,
         'description' => $script->description,
-        'codeLang' => $script->codeLang,
+        'code_lang' => $script->code_lang,
         'is_public' => $script->is_public,
-        'share_global' => $script->share_global,
-        'share_link' => $script->share_link,
+        'is_global' => $script->is_global,
+        'slug' => $script->slug,
         'created_at' => $script->created_at,
         'updated_at' => $script->updated_at,
       ];
@@ -41,28 +42,38 @@ class ScriptController extends Controller
     if ($request->has('description') && is_null($request->input("description"))) {
       $request->merge(['description' => '']);
     }
+    if (!$request->has('is_public')) {
+      $request->merge(['is_public' => false]);
+    }
+    if (!$request->has('is_global')) {
+      $request->merge(['is_global' => false]);
+    }
 
     $request->validate([
       'title' => 'required|string',
       'description' => 'string',
       'code' => 'required|string',
       'codeLang' => 'required|string',
+      'is_public' => 'boolean',
+      'is_global' => 'boolean',
     ]);
 
     // Generate new share short slug
-    $share_link = generateNewShareLink();
+    $slug = generateSlug();
 
     // Create a new script
-    $script = $request->user()->scripts()->create([
-      'title' => $request->input('title'),
-      'description' => $request->input('description'),
-      'code' => $request->input('code'),
-      'codeLang' => $request->input('codeLang'),
-      'is_public' => false,
-      'share_link' => $share_link,
-    ]);
+    $script = new Script();
+    $script->title = $request->input("title");
+    $script->description = $request->input("description");
+    $script->code = $request->input('code');
+    $script->code_lang = $request->input('codeLang');
+    $script->is_public = $request->input('is_public');
+    $script->is_global = $request->input('is_global');
+    $script->slug = $slug;
 
-    return redirect()->route('dashboard.scripts.show', [$share_link])->with('success', 'Script created successfully.');
+    $request->user()->scripts()->save($script);
+
+    return redirect()->route('dashboard.scripts.show', [$slug])->with('success', 'Script created successfully.');
   }
 
 
@@ -79,7 +90,7 @@ class ScriptController extends Controller
    */
   public function show(string $slug)
   {
-    $script = auth()->user()->scripts()->where('share_link', $slug)->first();
+    $script = auth()->user()->scripts()->where('slug', $slug)->first();
 
     if (!$script) {
       return redirect()->route('dashboard.scripts.index')->with('error', 'Script not found.');
@@ -95,7 +106,7 @@ class ScriptController extends Controller
    */
   public function edit(string $slug)
   {
-    $script = auth()->user()->scripts()->where('share_link', $slug)->first();
+    $script = auth()->user()->scripts()->where('slug', $slug)->first();
 
     if (!$script) {
       return redirect()->route('dashboard.scripts.index')->with('error', 'Script not found.');
@@ -111,7 +122,7 @@ class ScriptController extends Controller
    */
   public function update(Request $request, string $slug)
   {
-    $script = auth()->user()->scripts()->where('share_link', $slug)->first();
+    $script = auth()->user()->scripts()->where('slug', $slug)->first();
     if (!$script) {
       return redirect()->route('dashboard.scripts.index')->with('error', 'Script not found.');
     }
@@ -132,7 +143,7 @@ class ScriptController extends Controller
       'title' => $request->input('title'),
       'description' => $request->input('description'),
       'code' => $request->input('code'),
-      'codeLang' => $request->input('codeLang'),
+      'code_lang' => $request->input('codeLang'),
       'updated_at' => now(),
     ]);
 
@@ -144,7 +155,7 @@ class ScriptController extends Controller
    */
   public function destroy(string $slug)
   {
-    $script = auth()->user()->scripts()->where('share_link', $slug)->first();
+    $script = auth()->user()->scripts()->where('slug', $slug)->first();
     if (!$script) {
       return redirect()->route('dashboard.scripts.index')->with('error', 'Script not found.');
     }

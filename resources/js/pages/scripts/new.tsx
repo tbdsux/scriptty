@@ -176,6 +176,8 @@ export default function NewScriptsPage() {
               </FormItem>
             </FormField>
 
+            {/* <FormField /> */}
+
             <div className="flex items-center justify-end">
               <Button type="submit">
                 <Code2Icon />

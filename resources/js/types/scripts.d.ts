@@ -3,12 +3,13 @@ export type Script = {
   created_at: string;
   updated_at: string;
   code: string;
-  codeLang: string;
+  code_lang: string;
   title: string;
   description: string;
   user_id: number;
   views: number;
   likes: number;
   is_public: boolean;
-  share_link: string | null;
+  is_global: boolean;
+  slug: string;
 };

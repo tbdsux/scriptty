@@ -23,7 +23,7 @@ export default function ScriptItemPage(props: { script: Script }) {
   const deleteScript: FormEventHandler = (e) => {
     e.preventDefault();
 
-    form.delete(route('dashboard.scripts.destroy', [props.script.share_link]), {
+    form.delete(route('dashboard.scripts.destroy', [props.script.slug]), {
       onSuccess: () => {
         toast.success('Script deleted successfully!');
       },
@@ -61,9 +61,7 @@ export default function ScriptItemPage(props: { script: Script }) {
             <div className="absolute top-2 right-2 inline-flex space-x-2">
               <Button asChild className="h-auto py-1 text-sm">
                 <Link
-                  href={route('dashboard.scripts.edit', [
-                    props.script.share_link,
-                  ])}
+                  href={route('dashboard.scripts.edit', [props.script.slug])}
                 >
                   <PenIcon className="size-3" />
                   Edit
@@ -86,7 +84,7 @@ export default function ScriptItemPage(props: { script: Script }) {
           <CardContent>
             <div className="rounded-[7.5px] border">
               <div className="flex items-center justify-between p-2">
-                <Badge>{props.script.codeLang}</Badge>
+                <Badge>{props.script.code_lang}</Badge>
 
                 <Button className="h-auto py-1 text-xs" variant={'outline'}>
                   <CopyIcon className="size-3" />
@@ -97,7 +95,7 @@ export default function ScriptItemPage(props: { script: Script }) {
               <CodeEditor
                 value={props.script.code}
                 onChange={() => {}}
-                lang={props.script.codeLang as LanguageName}
+                lang={props.script.code_lang as LanguageName}
                 height="800px"
                 readOnly
               />

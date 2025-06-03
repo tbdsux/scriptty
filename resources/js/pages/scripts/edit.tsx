@@ -50,7 +50,7 @@ export default function EditScriptsPage(props: { script: Script }) {
   }>({
     title: props.script.title,
     code: props.script.code,
-    codeLang: props.script.codeLang,
+    codeLang: props.script.code_lang,
     description: props.script.description,
   });
 
@@ -59,7 +59,7 @@ export default function EditScriptsPage(props: { script: Script }) {
   const createNewScript: FormEventHandler = (e) => {
     e.preventDefault();
 
-    form.post(route('dashboard.scripts.update', [props.script.share_link]), {
+    form.post(route('dashboard.scripts.update', [props.script.slug]), {
       onSuccess: () => {
         toast.success('Script updated successfully!');
         form.reset();
@@ -77,9 +77,7 @@ export default function EditScriptsPage(props: { script: Script }) {
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
         <div>
           <Button variant={'link'} asChild>
-            <Link
-              href={route('dashboard.scripts.show', [props.script.share_link])}
-            >
+            <Link href={route('dashboard.scripts.show', [props.script.slug])}>
               <ArrowLeftIcon />
               Back
             </Link>

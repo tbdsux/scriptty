@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Script extends Model
 {
   use HasFactory;
-  
+
   protected $fillable = [
     "title",
     "description",
     "code",
-    "codeLang",
+    "code_lang",
     "is_public",
-    "share_link",
+    "is_global",
+    "slug",
   ];
 }
