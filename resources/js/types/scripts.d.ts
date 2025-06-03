@@ -13,3 +13,14 @@ export type Script = {
   is_global: boolean;
   slug: string;
 };
+
+export type WithAuthor<T> = T & {
+  author: {
+    id: number;
+    name: string;
+    email: string;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
+  };
+};

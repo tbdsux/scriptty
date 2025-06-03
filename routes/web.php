@@ -10,6 +10,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/scripts/{script}', [PublicScriptController::class, 'show'])->name('public.scripts.show');
+Route::get('/scripts', [PublicscriptController::class, 'index'])->name('public.scripts.index');
 
 Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('dashboard', function () {

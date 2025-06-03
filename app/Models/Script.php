@@ -18,4 +18,9 @@ class Script extends Model
     "is_global",
     "slug",
   ];
+
+  public function author()
+  {
+    return $this->belongsTo(User::class, 'user_id');
+  }
 }

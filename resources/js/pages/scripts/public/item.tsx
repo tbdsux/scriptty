@@ -5,13 +5,14 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
 import HomeLayout from '@/layouts/home-layout';
 import { sanitizeHtml } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Script } from '@/types/scripts';
+import { Script, WithAuthor } from '@/types/scripts';
 import { Head } from '@inertiajs/react';
 import { LanguageName } from '@uiw/codemirror-extensions-langs';
 import { CopyIcon } from 'lucide-react';
@@ -23,10 +24,12 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function PublicScriptItemPage(props: { script: Script }) {
+export default function PublicScriptItemPage(props: {
+  script: WithAuthor<Script>;
+}) {
   return (
     <HomeLayout breadcrumbs={breadcrumbs}>
-      <Head title={`${props.script.title} | Scripts `} />
+      <Head title={`${props.script.title}`} />
 
       <div className="p-4">
         <Card className="relative">
@@ -78,8 +81,14 @@ export default function PublicScriptItemPage(props: { script: Script }) {
                 readOnly
               />
             </div>
+          </CardContent>
 
-            <hr className="my-4" />
+          <CardFooter className="flex items-center justify-between">
+            <div className="">
+              <p className="text-muted-foreground text-sm">
+                Author: <strong>@{props.script.author.name}</strong>
+              </p>
+            </div>
 
             <div>
               <p className="text-muted-foreground text-sm">
@@ -89,7 +98,7 @@ export default function PublicScriptItemPage(props: { script: Script }) {
                 Updated at: {new Date(props.script.updated_at).toLocaleString()}
               </p>
             </div>
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
     </HomeLayout>

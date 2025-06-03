@@ -13,7 +13,7 @@ class PublicScriptController extends Controller
    */
   public function show(string $slug)
   {
-    $script = Script::where('slug', $slug)->first();
+    $script = Script::with('author:id,name')->where('slug', $slug)->first();
     if (!$script) {
       abort(404);
     }
@@ -24,6 +24,22 @@ class PublicScriptController extends Controller
 
     return Inertia::render("scripts/public/item", [
       'script' => $script,
+    ]);
+  }
+
+  /**
+   * Display list of global & public scripts.
+   */
+  public function index()
+  {
+    $global_scripts = Script::with('author:id,name')
+      ->where('is_public', true)
+      ->where('is_global', true)
+      ->orderBy('updated_at', 'desc')
+      ->get();
+
+    return Inertia::render('scripts/public/index', [
+      'scripts' => $global_scripts,
     ]);
   }
 }
