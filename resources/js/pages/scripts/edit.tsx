@@ -1,4 +1,5 @@
 import CodeEditor from '@/components/code-editor';
+import TextEditor from '@/components/text-editor';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -22,7 +23,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { codeDefaults } from '@/lib/code-defaults';
 import { cn } from '@/lib/utils';
@@ -179,11 +179,9 @@ export default function EditScriptsPage(props: { script: Script }) {
               <FormItem className="flex flex-col">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea
+                  <TextEditor
+                    onChange={(e) => form.setData('description', e)}
                     value={form.data.description}
-                    onChange={(e) =>
-                      form.setData('description', e.target.value)
-                    }
                   />
                 </FormControl>
                 <FormMessage />

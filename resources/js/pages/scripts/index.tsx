@@ -7,8 +7,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
+import { sanitizeHtml } from '@/lib/utils';
 import { Script } from '@/types/scripts';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 export default function ScriptsPage(props: { scripts: Script[] }) {
   return (
@@ -29,22 +30,32 @@ export default function ScriptsPage(props: { scripts: Script[] }) {
 
           <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {props.scripts.map((item) => (
-              <Card key={item.id} className="relative">
-                <Badge className="absolute top-2 right-2">
-                  {item.codeLang}
-                </Badge>
+              <Link
+                key={item.id}
+                href={route('dashboard.scripts.show', [item.share_link])}
+              >
+                <Card className="relative h-full">
+                  <Badge className="absolute top-2 right-2">
+                    {item.codeLang}
+                  </Badge>
 
-                <CardHeader>
-                  <CardTitle className="line-clamp-2">{item.title}</CardTitle>
-                  <CardDescription className="line-clamp-2">
-                    {item.description ? (
-                      item.description
-                    ) : (
-                      <span className="text-sm">[No description set]</span>
-                    )}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+                  <CardHeader>
+                    <CardTitle className="line-clamp-2">{item.title}</CardTitle>
+                    <CardDescription className="line-clamp-2">
+                      {item.description ? (
+                        <div
+                          className="prose prose-sm dark:prose-invert max-w-none"
+                          dangerouslySetInnerHTML={{
+                            __html: sanitizeHtml(item.description),
+                          }}
+                        />
+                      ) : (
+                        <span className="text-sm">[No description set]</span>
+                      )}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
             ))}
           </CardContent>
         </Card>

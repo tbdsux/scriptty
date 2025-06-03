@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
+import { sanitizeHtml } from '@/lib/utils';
 import { Script } from '@/types/scripts';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { LanguageName } from '@uiw/codemirror-extensions-langs';
@@ -46,7 +47,12 @@ export default function ScriptItemPage(props: { script: Script }) {
             </CardTitle>
             <CardDescription>
               {props.script.description ? (
-                props.script.description
+                <div
+                  className="prose prose-sm dark:prose-invert max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(props.script.description),
+                  }}
+                />
               ) : (
                 <span className="text-sm">[No description set]</span>
               )}
