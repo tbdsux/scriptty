@@ -8,7 +8,7 @@ export default function AppLogo() {
   return (
     <div
       className={cn(
-        'flex items-center space-x-2 transition-all duration-300',
+        'flex items-center justify-center space-x-2 transition-all duration-300',
         !open && !openMobile ? 'space-x-0' : '',
       )}
     >
@@ -20,7 +20,7 @@ export default function AppLogo() {
           )}
         />
       </div>
-      <div className="ml-1 grid flex-1 text-left text-base">
+      <div className="grid flex-1 text-left text-base">
         <span className="mb-0.5 truncate leading-none font-semibold">
           Scriptty
         </span>

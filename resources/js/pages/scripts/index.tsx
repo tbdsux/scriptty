@@ -28,7 +28,7 @@ export default function ScriptsPage(props: { scripts: Script[] }) {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {props.scripts.map((item) => (
               <Link
                 key={item.id}
