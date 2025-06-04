@@ -9,6 +9,7 @@ use Inertia\Inertia;
 
 class ScriptController extends Controller
 {
+
   /**
    * Display a listing of the resource.
    */
@@ -39,24 +40,7 @@ class ScriptController extends Controller
    */
   public function store(Request $request)
   {
-    if ($request->has('description') && is_null($request->input("description"))) {
-      $request->merge(['description' => '']);
-    }
-    if (!$request->has('isPublic')) {
-      $request->merge(['isPublic' => false]);
-    }
-    if (!$request->has('isGlobal')) {
-      $request->merge(['isGlobal' => false]);
-    }
-
-    $request->validate([
-      'title' => 'required|string',
-      'description' => 'string',
-      'code' => 'required|string',
-      'codeLang' => 'required|string',
-      'isPublic' => 'boolean',
-      'isGlobal' => 'boolean',
-    ]);
+    $this->validate_script_request($request);
 
     // Generate new share short slug
     $slug = generateSlug();
@@ -76,6 +60,32 @@ class ScriptController extends Controller
     return redirect()->route('dashboard.scripts.show', [$slug])->with('success', 'Script created successfully.');
   }
 
+  /**
+   * Validate the script request.
+   * @param Request $request
+   * @return void
+   */
+  public function validate_script_request(Request $request): void
+  {
+    if ($request->has('description') && is_null($request->input("description"))) {
+      $request->merge(['description' => '']);
+    }
+    if (!$request->has('isPublic')) {
+      $request->merge(['isPublic' => false]);
+    }
+    if (!$request->has('isGlobal')) {
+      $request->merge(['isGlobal' => false]);
+    }
+
+    $request->validate([
+      'title' => 'required|string',
+      'description' => 'string',
+      'code' => 'required|string',
+      'codeLang' => 'required|string',
+      'isPublic' => 'boolean',
+      'isGlobal' => 'boolean',
+    ]);
+  }
 
   /**
    * Show the form for creating a new resource.
@@ -127,24 +137,7 @@ class ScriptController extends Controller
       return redirect()->route('dashboard.scripts.index')->with('error', 'Script not found.');
     }
 
-    if ($request->has('description') && is_null($request->input("description"))) {
-      $request->merge(['description' => '']);
-    }
-    if (!$request->has('isPublic')) {
-      $request->merge(['isPublic' => false]);
-    }
-    if (!$request->has('isGlobal')) {
-      $request->merge(['isGlobal' => false]);
-    }
-
-    $request->validate([
-      'title' => 'required|string',
-      'description' => 'string',
-      'code' => 'required|string',
-      'codeLang' => 'required|string',
-      'isPublic' => 'boolean',
-      'isGlobal' => 'boolean',
-    ]);
+    $this->validate_script_request($request);
 
     // Update
     $script->update([

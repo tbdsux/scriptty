@@ -22,6 +22,9 @@ class PublicScriptController extends Controller
       abort(404);
     }
 
+    $script->increment('views');
+    $script->save();
+
     return Inertia::render("scripts/public/item", [
       'script' => $script,
     ]);

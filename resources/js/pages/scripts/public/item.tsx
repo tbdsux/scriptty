@@ -83,18 +83,22 @@ export default function PublicScriptItemPage(props: {
             </div>
           </CardContent>
 
-          <CardFooter className="flex items-center justify-between">
+          <CardFooter className="flex flex-col items-start justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
             <div className="">
               <p className="text-muted-foreground text-sm">
                 Author: <strong>@{props.script.author.name}</strong>
               </p>
+
+              <p className="text-muted-foreground text-xs">
+                <strong>{props.script.views}</strong> views
+              </p>
             </div>
 
             <div>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs">
                 Created at: {new Date(props.script.created_at).toLocaleString()}
               </p>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs">
                 Updated at: {new Date(props.script.updated_at).toLocaleString()}
               </p>
             </div>
