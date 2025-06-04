@@ -1,32 +1,76 @@
 services:
-  app:
+  web:
     build:
       context: .
-      dockerfile: ./Dockerfile
-    ports:
-      - '127.0.0.1:8888:8080'
-    depends_on:
-      - postgres
+      dockerfile: ./docker/production/nginx/Dockerfile
+    restart: unless-stopped # Automatically restart unless the service is explicitly stopped
+    volumes:
+      - laravel-storage-production:/var/www/storage:ro
+      - laravel-public-assets:/var/www/public/build:ro
     networks:
-      - scriptty-network
+      - scriptty
+    ports:
+      - '8888:80'
+    depends_on:
+      php-fpm:
+        condition: service_healthy # Wait for php-fpm health check
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/common/php-fpm/Dockerfile
+      target: production
+    restart: unless-stopped
+    volumes:
+      - laravel-public-assets:/var/www/public/build # Mount built public assets to ensure the manifest.json and hashed files match between Nginx and PHP-FPM
+      - laravel-storage-production:/var/www/storage # Mount the storage volume
     env_file:
       - .env
+    networks:
+      - scriptty
+    healthcheck:
+      test: ['CMD-SHELL', 'php-fpm-healthcheck || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   postgres:
     image: postgres:latest
-    environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    restart: unless-stopped
+    user: postgres
     env_file:
       - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - postgres-db:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
     networks:
-      - scriptty-network
+      - scriptty
+    healthcheck:
+      test: ['CMD', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-volumes:
-  postgres-db:
+  redis:
+    image: valkey:latest
+    restart: unless-stopped # Automatically restart unless the service is explicitly stopped
+    networks:
+      - scriptty
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
-  scriptty-network:
-    driver: bridge
+  scriptty:
+
+volumes:
+  pg-data:
+  laravel-storage-production:
+  laravel-public-assets:
