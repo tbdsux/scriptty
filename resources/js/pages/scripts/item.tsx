@@ -1,4 +1,5 @@
 import CodeEditor from '@/components/code-editor';
+import CopyCode from '@/components/copy-code';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +14,7 @@ import { sanitizeHtml } from '@/lib/utils';
 import { Script } from '@/types/scripts';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { LanguageName } from '@uiw/codemirror-extensions-langs';
-import { CopyIcon, PenIcon, Trash2Icon } from 'lucide-react';
+import { PenIcon, Trash2Icon } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import { toast } from 'sonner';
 
@@ -97,10 +98,7 @@ export default function ScriptItemPage(props: { script: Script }) {
               <div className="flex items-center justify-between p-2">
                 <Badge>{props.script.code_lang}</Badge>
 
-                <Button className="h-auto py-1 text-xs" variant={'outline'}>
-                  <CopyIcon className="size-3" />
-                  Copy
-                </Button>
+                <CopyCode code={props.script.code} />
               </div>
 
               <CodeEditor
