@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\PublicScriptController;
 use App\Http\Controllers\Dashboard\ScriptController;
 use Illuminate\Support\Facades\Route;
@@ -13,10 +14,7 @@ Route::get('/scripts/{script}', [PublicScriptController::class, 'show'])->name('
 Route::get('/scripts', [PublicscriptController::class, 'index'])->name('public.scripts.index');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-  Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
-  })->name('dashboard');
-
+  Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
   Route::get('dashboard/scripts/new', [ScriptController::class, 'create'])->name('dashboard.scripts.new');
   Route::put('dashboard/scripts/new', [ScriptController::class, 'store'])->name('dashboard.scripts.store');
   Route::get('/dashboard/scripts', [ScriptController::class, 'index'])->name('dashboard.scripts.index');
