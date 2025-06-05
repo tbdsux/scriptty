@@ -24,7 +24,7 @@ export function HomeNavFooter({
     >
       <SidebarGroupContent>
         <SidebarMenu>
-          {auth.user ? (
+          {auth?.user ? (
             <>
               {' '}
               <SidebarMenuItem>
