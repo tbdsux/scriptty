@@ -9,13 +9,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Form } from '@/components/ui/custom-form';
+import { useTypedPageProps } from '@/composables/use-typed-page-props';
 import HomeLayout from '@/layouts/home-layout';
 import { sanitizeHtml } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Script, WithAuthor } from '@/types/scripts';
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { LanguageName } from '@uiw/codemirror-extensions-langs';
-import { CopyIcon } from 'lucide-react';
+import { CopyIcon, ThumbsUpIcon } from 'lucide-react';
+import { FormEventHandler, useEffect } from 'react';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -26,7 +30,40 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function PublicScriptItemPage(props: {
   script: WithAuthor<Script>;
+  hasUserLiked: boolean;
 }) {
+  const { flash } = useTypedPageProps<{
+    flash: {
+      success?: string;
+      error?: string;
+      info?: string;
+    };
+  }>().props;
+
+  const form = useForm<{
+    slugId: string;
+  }>({
+    slugId: props.script.slug,
+  });
+
+  const handleLike: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    form.post(route('public.scripts.like', [props.script.slug]));
+  };
+
+  useEffect(() => {
+    if (flash.success) {
+      toast.success(flash.success);
+    }
+    if (flash.error) {
+      toast.error(flash.error);
+    }
+    if (flash.info) {
+      toast.info(flash.info);
+    }
+  }, [flash]);
+
   return (
     <HomeLayout breadcrumbs={breadcrumbs}>
       <Head title={`${props.script.title}`} />
@@ -67,10 +104,35 @@ export default function PublicScriptItemPage(props: {
               <div className="flex items-center justify-between p-2">
                 <Badge>{props.script.code_lang}</Badge>
 
-                <Button className="h-auto py-1 text-xs" variant={'outline'}>
-                  <CopyIcon className="size-3" />
-                  Copy
-                </Button>
+                <div className="inline-flex items-center gap-2">
+                  <Button className="h-auto py-1 text-xs" variant={'outline'}>
+                    <CopyIcon className="size-3" />
+                    Copy
+                  </Button>
+
+                  {props.hasUserLiked ? (
+                    <Badge
+                      variant={'secondary'}
+                      className="h-auto py-1 text-xs"
+                    >
+                      <ThumbsUpIcon className="size-3" />
+                      Liked ({props.script.likes})
+                    </Badge>
+                  ) : (
+                    <Form form={form}>
+                      <form onSubmit={handleLike}>
+                        <Button
+                          type="submit"
+                          className="h-auto cursor-pointer py-1 text-xs"
+                          variant={'secondary'}
+                        >
+                          <ThumbsUpIcon className="size-3" />
+                          Like ({props.script.likes})
+                        </Button>
+                      </form>
+                    </Form>
+                  )}
+                </div>
               </div>
 
               <CodeEditor
