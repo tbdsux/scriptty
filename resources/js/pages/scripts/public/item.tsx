@@ -17,8 +17,8 @@ import { BreadcrumbItem } from '@/types';
 import { Script, WithAuthor } from '@/types/scripts';
 import { Head, useForm } from '@inertiajs/react';
 import { LanguageName } from '@uiw/codemirror-extensions-langs';
-import { CopyIcon, ThumbsUpIcon } from 'lucide-react';
-import { FormEventHandler, useEffect } from 'react';
+import { CheckIcon, CopyIcon, Link2Icon, ThumbsUpIcon } from 'lucide-react';
+import { FormEventHandler, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -46,10 +46,31 @@ export default function PublicScriptItemPage(props: {
     slugId: props.script.slug,
   });
 
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
+  const [isCodeCopied, setIsCodeCopied] = useState(false);
+
   const handleLike: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     form.post(route('public.scripts.like', [props.script.slug]));
+  };
+
+  const copyPublicLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setIsLinkCopied(true);
+
+    setTimeout(() => {
+      setIsLinkCopied(false);
+    }, 3000);
+  };
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(props.script.code);
+    setIsCodeCopied(true);
+
+    setTimeout(() => {
+      setIsCodeCopied(false);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -70,6 +91,21 @@ export default function PublicScriptItemPage(props: {
 
       <div className="p-4">
         <Card className="relative">
+          <div className="absolute top-2 right-2">
+            <Button
+              onClick={copyPublicLink}
+              className="h-auto cursor-pointer py-1 text-xs"
+              variant={'outline'}
+            >
+              {isLinkCopied ? (
+                <CheckIcon className="size-3" />
+              ) : (
+                <Link2Icon className="size-3" />
+              )}
+              {isLinkCopied ? 'Link Copied!' : 'Copy Public Link'}
+            </Button>
+          </div>
+
           <CardHeader className="">
             <CardTitle className="text-xl font-black">
               {props.script.title}
@@ -105,9 +141,18 @@ export default function PublicScriptItemPage(props: {
                 <Badge>{props.script.code_lang}</Badge>
 
                 <div className="inline-flex items-center gap-2">
-                  <Button className="h-auto py-1 text-xs" variant={'outline'}>
-                    <CopyIcon className="size-3" />
-                    Copy
+                  <Button
+                    onClick={copyCode}
+                    className="h-auto cursor-pointer py-1 text-xs"
+                    variant={'outline'}
+                  >
+                    {isCodeCopied ? (
+                      <CheckIcon className="size-3" />
+                    ) : (
+                      <CopyIcon className="size-3" />
+                    )}
+
+                    {isCodeCopied ? 'Code Copied!' : 'Copy'}
                   </Button>
 
                   {props.hasUserLiked ? (

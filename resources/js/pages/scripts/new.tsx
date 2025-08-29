@@ -51,7 +51,7 @@ export default function NewScriptsPage() {
     isGlobal: boolean;
   }>({
     title: '',
-    code: 'print("Hello World")',
+    code: "print('Hello, World!')",
     codeLang: 'python',
     description: '',
     isPublic: false,
@@ -59,6 +59,8 @@ export default function NewScriptsPage() {
   });
 
   const [openCb, setOpenCb] = useState(false);
+
+  const [prevSelectedLang, setPrevSelectedLang] = useState(form.data.codeLang);
 
   const createNewScript: FormEventHandler = (e) => {
     e.preventDefault();
@@ -121,13 +123,26 @@ export default function NewScriptsPage() {
                                 key={item}
                                 value={item}
                                 onSelect={(currentValue) => {
+                                  const currentInput = form.data.code;
+
+                                  // Change current code editor value only if it has been changed.
+                                  if (
+                                    (codeDefaults[
+                                      prevSelectedLang as LanguageName
+                                    ] ?? '') === currentInput ||
+                                    currentInput === ''
+                                  ) {
+                                    form.setData(
+                                      'code',
+                                      codeDefaults[
+                                        currentValue as LanguageName
+                                      ],
+                                    );
+                                  }
+
                                   form.setData('codeLang', currentValue);
-                                  form.setData(
-                                    'code',
-                                    codeDefaults[
-                                      currentValue as LanguageName
-                                    ] ?? '',
-                                  );
+                                  setPrevSelectedLang(currentValue);
+
                                   setOpenCb(false);
                                 }}
                               >

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Code2Icon, LayoutGrid } from 'lucide-react';
+import { Code2Icon, Globe2Icon, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -25,6 +25,14 @@ const mainNavItems: NavItem[] = [
     title: 'My Scripts',
     href: '/dashboard/scripts',
     icon: Code2Icon,
+  },
+];
+
+const otherNavItems: NavItem[] = [
+  {
+    title: 'Public Scripts',
+    href: '/scripts',
+    icon: Globe2Icon,
   },
 ];
 
@@ -44,7 +52,8 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={mainNavItems} />
+        <NavMain items={mainNavItems} label="Platform" />
+        <NavMain items={otherNavItems} label="Other" />
       </SidebarContent>
 
       <SidebarFooter>

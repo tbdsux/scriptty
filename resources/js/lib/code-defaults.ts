@@ -5,7 +5,7 @@ export const codeDefaults: Record<LanguageName, string> = {
   asciiArmor:
     '-----BEGIN PGP MESSAGE-----\nHello World\n-----END PGP MESSAGE-----',
   asterisk: 'exten => s,1,Playback(hello-world)',
-  c: 'printf("Hello, World!\\n");',
+  c: 'printf("Hello, World!");',
   csharp: 'System.Console.WriteLine("Hello, World!");',
   scala: 'println("Hello, World!")',
   solidity:
