@@ -40,14 +40,14 @@ export default function PublicScriptsPage(props: {
           </CardHeader>
 
           <CardContent>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {props.scripts.map((item) => (
                 <div key={item.id}>
                   <Link
                     href={route('public.scripts.show', item.slug)}
                     className="group"
                   >
-                    <Card className="relative duration-300 group-hover:border-neutral-600">
+                    <Card className="relative h-full duration-300 group-hover:border-neutral-600">
                       <CardHeader>
                         <CardTitle className="line-clamp-2 font-bold">
                           {item.title}

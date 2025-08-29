@@ -24,7 +24,7 @@ export default function TextEditor(props: {
     editorProps: {
       attributes: {
         class:
-          'prose prose-sm m-0 focus:outline-none dark:prose-invert prose-strong:text-inherit h-[100px] w-full max-w-none border border-border py-2 px-4 rounded-lg',
+          'prose prose-sm m-0 focus:outline-none dark:prose-invert prose-strong:text-inherit min-h-[100px] w-full max-w-none border border-border py-2 px-4 rounded-lg',
       },
     },
   });
