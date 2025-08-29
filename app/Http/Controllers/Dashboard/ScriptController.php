@@ -139,10 +139,15 @@ class ScriptController extends Controller
 
     $this->validate_script_request($request);
 
+    $updated_description = $request->input('description');
+    if ($updated_description == "<p></p>") {
+      $updated_description = "";
+    }
+
     // Update
     $script->update([
       'title' => $request->input('title'),
-      'description' => $request->input('description'),
+      'description' => $updated_description,
       'code' => $request->input('code'),
       'code_lang' => $request->input('codeLang'),
       'updated_at' => now(),
