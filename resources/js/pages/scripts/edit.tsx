@@ -25,12 +25,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import AppLayout from '@/layouts/app-layout';
-import { codeDefaults, LanguageCode } from '@/lib/code-defaults';
+import { langNames, LanguageCode } from '@/lib/code-defaults';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Script } from '@/types/scripts';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { langNames } from '@uiw/codemirror-extensions-langs';
 import { ArrowLeftIcon, Check, ChevronsUpDown, Code2Icon } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 import { toast } from 'sonner';
@@ -91,7 +90,7 @@ export default function EditScriptsPage(props: { script: Script }) {
 
         <Form form={form}>
           <form onSubmit={createNewScript} className="flex flex-col gap-4">
-            <div className="flex items-center justify-between gap-12">
+            <div className="flex flex-col items-center justify-between gap-4 md:flex-row md:gap-6 xl:gap-12">
               <FormField name="title">
                 <FormItem className="flex w-full flex-col">
                   <FormLabel>Title</FormLabel>
@@ -101,7 +100,7 @@ export default function EditScriptsPage(props: { script: Script }) {
               </FormField>
 
               <FormField name="codeLang">
-                <FormItem className="flex flex-col">
+                <FormItem className="flex w-full flex-col md:w-auto">
                   <FormLabel>Language</FormLabel>
                   <Popover open={openCb} onOpenChange={setOpenCb}>
                     <PopoverTrigger asChild>
@@ -109,7 +108,7 @@ export default function EditScriptsPage(props: { script: Script }) {
                         <Button
                           variant="outline"
                           role="combobox"
-                          className="w-[250px] justify-between"
+                          className="w-full justify-between md:w-[250px]"
                         >
                           {form.data.codeLang
                             ? langNames.find(
@@ -132,12 +131,7 @@ export default function EditScriptsPage(props: { script: Script }) {
                                 value={item}
                                 onSelect={(currentValue) => {
                                   form.setData('codeLang', currentValue);
-                                  form.setData(
-                                    'code',
-                                    codeDefaults[
-                                      currentValue as LanguageCode
-                                    ] ?? '',
-                                  );
+                                  // Do not change code value if user has already modified it.
                                   setOpenCb(false);
                                 }}
                               >

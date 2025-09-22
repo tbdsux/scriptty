@@ -1,9 +1,16 @@
+import { LanguageCode } from '@/lib/code-defaults';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { atomone } from '@uiw/codemirror-themes-all';
-import CodeMirror from '@uiw/react-codemirror';
-
-import { LanguageCode } from '@/lib/code-defaults';
+import CodeMirror, { EditorView } from '@uiw/react-codemirror';
+import { useCallback } from 'react';
 import '../../css/custom-code.css';
+
+const handleLoadLanguage = (lang: LanguageCode) => {
+  const ext = loadLanguage(lang);
+  if (!ext) return [];
+
+  return ext;
+};
 
 export default function CodeEditor(props: {
   value: string;
@@ -12,18 +19,24 @@ export default function CodeEditor(props: {
   height?: string;
   readOnly?: boolean;
 }) {
+  // wrap onchange with useCallback to avoid re-rendering the component
+  const handleChange = useCallback((value: string) => {
+    props.onChange(value);
+  }, []);
+
   return (
-    <div className="">
+    <div className="relative block">
       <CodeMirror
         value={props.value.replace(/\\n/g, '\n')}
-        onChange={props.onChange}
+        onChange={handleChange}
         lang={props.lang}
-        height={props.height ?? '700px'}
+        height={props.height || '700px'}
+        width="100%"
         theme={atomone}
         readOnly={props.readOnly}
         aria-readonly={props.readOnly}
-        className="rounded-xl!"
-        extensions={[props.lang === 'text' ? [] : loadLanguage(props.lang)!]}
+        className=""
+        extensions={[handleLoadLanguage(props.lang)!, EditorView.lineWrapping]}
         basicSetup={{
           foldGutter: false,
           dropCursor: false,
