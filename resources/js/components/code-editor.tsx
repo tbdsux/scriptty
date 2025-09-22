@@ -1,13 +1,14 @@
-import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs';
+import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { atomone } from '@uiw/codemirror-themes-all';
 import CodeMirror from '@uiw/react-codemirror';
 
+import { LanguageCode } from '@/lib/code-defaults';
 import '../../css/custom-code.css';
 
 export default function CodeEditor(props: {
   value: string;
   onChange: (value: string) => void;
-  lang: LanguageName;
+  lang: LanguageCode;
   height?: string;
   readOnly?: boolean;
 }) {
@@ -22,7 +23,7 @@ export default function CodeEditor(props: {
         readOnly={props.readOnly}
         aria-readonly={props.readOnly}
         className="rounded-xl!"
-        extensions={[loadLanguage(props.lang)!]}
+        extensions={[props.lang === 'text' ? [] : loadLanguage(props.lang)!]}
         basicSetup={{
           foldGutter: false,
           dropCursor: false,

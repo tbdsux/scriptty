@@ -12,11 +12,11 @@ import {
 import { Form } from '@/components/ui/custom-form';
 import { useTypedPageProps } from '@/composables/use-typed-page-props';
 import HomeLayout from '@/layouts/home-layout';
+import { LanguageCode } from '@/lib/code-defaults';
 import { sanitizeHtml } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Script, WithAuthor } from '@/types/scripts';
 import { Head, useForm } from '@inertiajs/react';
-import { LanguageName } from '@uiw/codemirror-extensions-langs';
 import { CheckIcon, CopyIcon, Link2Icon, ThumbsUpIcon } from 'lucide-react';
 import { FormEventHandler, useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -183,7 +183,7 @@ export default function PublicScriptItemPage(props: {
               <CodeEditor
                 value={props.script.code}
                 onChange={() => {}}
-                lang={props.script.code_lang as LanguageName}
+                lang={props.script.code_lang as LanguageCode}
                 height="800px"
                 readOnly
               />

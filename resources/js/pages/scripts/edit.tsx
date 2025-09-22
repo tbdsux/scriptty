@@ -25,12 +25,12 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import AppLayout from '@/layouts/app-layout';
-import { codeDefaults } from '@/lib/code-defaults';
+import { codeDefaults, LanguageCode } from '@/lib/code-defaults';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Script } from '@/types/scripts';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { langNames, LanguageName } from '@uiw/codemirror-extensions-langs';
+import { langNames } from '@uiw/codemirror-extensions-langs';
 import { ArrowLeftIcon, Check, ChevronsUpDown, Code2Icon } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 import { toast } from 'sonner';
@@ -135,7 +135,7 @@ export default function EditScriptsPage(props: { script: Script }) {
                                   form.setData(
                                     'code',
                                     codeDefaults[
-                                      currentValue as LanguageName
+                                      currentValue as LanguageCode
                                     ] ?? '',
                                   );
                                   setOpenCb(false);
@@ -171,7 +171,7 @@ export default function EditScriptsPage(props: { script: Script }) {
                     onChange={(e) => {
                       form.setData('code', e);
                     }}
-                    lang={form.data.codeLang as LanguageName}
+                    lang={form.data.codeLang as LanguageCode}
                   />
                 </FormControl>
                 <FormMessage />

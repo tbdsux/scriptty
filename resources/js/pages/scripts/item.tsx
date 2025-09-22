@@ -10,10 +10,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
+import { LanguageCode } from '@/lib/code-defaults';
 import { sanitizeHtml } from '@/lib/utils';
 import { Script } from '@/types/scripts';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { LanguageName } from '@uiw/codemirror-extensions-langs';
 import { PenIcon, Trash2Icon } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import { toast } from 'sonner';
@@ -104,7 +104,7 @@ export default function ScriptItemPage(props: { script: Script }) {
               <CodeEditor
                 value={props.script.code}
                 onChange={() => {}}
-                lang={props.script.code_lang as LanguageName}
+                lang={props.script.code_lang as LanguageCode}
                 height="800px"
                 readOnly
               />

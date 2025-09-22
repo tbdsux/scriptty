@@ -1,6 +1,8 @@
 import { LanguageName } from '@uiw/codemirror-extensions-langs';
 
-export const codeDefaults: Record<LanguageName, string> = {
+export type LanguageCode = LanguageName | 'text';
+
+export const codeDefaults: Record<LanguageCode, string> = {
   apl: "'Hello, World!'",
   asciiArmor:
     '-----BEGIN PGP MESSAGE-----\nHello World\n-----END PGP MESSAGE-----',
@@ -140,4 +142,7 @@ export const codeDefaults: Record<LanguageName, string> = {
   julia: 'println("Hello, World!")',
   dockerfile: 'FROM alpine\nCMD ["echo", "Hello, World!"]',
   r: 'print("Hello, World!")',
+  text: 'Hello, World!',
 };
+
+export const langNames = Object.keys(codeDefaults);

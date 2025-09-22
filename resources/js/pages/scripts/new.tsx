@@ -25,11 +25,10 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import AppLayout from '@/layouts/app-layout';
-import { codeDefaults } from '@/lib/code-defaults';
+import { codeDefaults, langNames, LanguageCode } from '@/lib/code-defaults';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { langNames, LanguageName } from '@uiw/codemirror-extensions-langs';
 import { Check, ChevronsUpDown, Code2Icon } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 import { toast } from 'sonner';
@@ -51,8 +50,8 @@ export default function NewScriptsPage() {
     isGlobal: boolean;
   }>({
     title: '',
-    code: "print('Hello, World!')",
-    codeLang: 'python',
+    code: 'Hello, World!',
+    codeLang: 'text',
     description: '',
     isPublic: false,
     isGlobal: false,
@@ -128,14 +127,14 @@ export default function NewScriptsPage() {
                                   // Change current code editor value only if it has been changed.
                                   if (
                                     (codeDefaults[
-                                      prevSelectedLang as LanguageName
+                                      prevSelectedLang as LanguageCode
                                     ] ?? '') === currentInput ||
                                     currentInput === ''
                                   ) {
                                     form.setData(
                                       'code',
                                       codeDefaults[
-                                        currentValue as LanguageName
+                                        currentValue as LanguageCode
                                       ],
                                     );
                                   }
@@ -176,7 +175,7 @@ export default function NewScriptsPage() {
                     onChange={(e) => {
                       form.setData('code', e);
                     }}
-                    lang={form.data.codeLang as LanguageName}
+                    lang={form.data.codeLang as LanguageCode}
                   />
                 </FormControl>
                 <FormMessage />
